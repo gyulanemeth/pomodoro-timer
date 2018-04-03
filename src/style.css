@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    font-family: 'Contrail One', cursive;
+    transition: all 2s;
+}
+
+#timer-svg {
+    height: 100vh;
+    width: auto;
+    max-width: 100%;
+    display: block;
+    margin: auto;
+}

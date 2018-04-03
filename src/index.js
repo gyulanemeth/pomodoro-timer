@@ -1,3 +1,9 @@
+var audioDing = new Audio("ding.mp3");
+
+var config = JSON.parse(localStorage.getItem("pompom-config")) || {
+    sound: true
+};
+
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
     var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
   
@@ -30,7 +36,7 @@ document.getElementById("arc").setAttribute("d", describeArc(150, 150, 100, 0, 0
 
 const pomodoroFocus = {
     label: "focus",
-    length: 25 * 60,
+    length: 25,
     colors: {
         background: "#abcdef",
         bgArc: "#aabbcc",
@@ -133,6 +139,10 @@ function play() {
         document.getElementById("arc").setAttribute("d", describeArc(150, 150, 100, 0, deg));
 
         if (actTimebox.length - actTimebox.timeSpent < 0.1) {
+            if (config.sound) {
+                audioDing.play();
+            }
+
             actTimeboxIdx += 1;
             actTimeboxIdx %= timeboxes.length;
 
@@ -189,3 +199,15 @@ document.getElementById("play").onclick = play;
 document.getElementById("pause").onclick = stop;
 document.getElementById("prev").onclick = prev;
 document.getElementById("next").onclick = next;
+
+
+if (!config.sound) {
+    document.getElementById("speaker-sound").style.display = "none";
+}
+
+document.getElementById("speaker").onclick = function() {
+    config.sound = !config.sound;
+    localStorage.setItem("pompom-config", JSON.stringify(config));
+
+    document.getElementById("speaker-sound").style.display = config.sound ? "" : "none";
+}

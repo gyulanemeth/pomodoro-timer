@@ -34,45 +34,54 @@ function describeArc(x, y, radius, startAngle, endAngle){
 
 document.getElementById("arc").setAttribute("d", describeArc(150, 150, 100, 0, 0));
 
-const pomodoroFocus = {
-    label: "focus",
-    length: 25 * 60,
-    colors: {
-        background: "#abcdef",
-        bgArc: "#aabbcc",
-        arc: "#ddeeff"
-    }
-};
-
-const pomodoroShortBreak = {
-    label: "short break",
-    length: 5 * 60,
-    colors: {
-        background: "#abefcd",
-        bgArc: "#aaccbb",
-        arc: "#ddffee"
-    }
-};
-
-const pomodoroLongBreak = {
-    label: "long break",
-    length: 15 * 60,
-    colors: {
-        background: "#abefcd",
-        bgArc: "#aaccbb",
-        arc: "#ddffee"
+const pomodoroTimeboxes = {
+    focus: () => {
+        return {
+            label: "focus",
+            length: 25 * 60,
+            timeSpent: 0,
+            colors: {
+                background: "#abcdef",
+                bgArc: "#aabbcc",
+                arc: "#ddeeff"
+            }
+        };
+    },
+    shortBreak: () => {
+        return {
+            label: "short break",
+            length: 5 * 60,
+            timeSpent: 0,
+            colors: {
+                background: "#abefcd",
+                bgArc: "#aaccbb",
+                arc: "#ddffee"
+            }
+        };
+    },
+    longBreak: () => {
+        return {
+            label: "long break",
+            length: 15 * 60,
+            timeSpent: 0,
+            colors: {
+                background: "#abefcd",
+                bgArc: "#aaccbb",
+                arc: "#ddffee"
+            }
+        }
     }
 };
 
 const timeboxes = [
-    pomodoroFocus,
-    pomodoroShortBreak,
-    pomodoroFocus,
-    pomodoroShortBreak,
-    pomodoroFocus,
-    pomodoroShortBreak,
-    pomodoroFocus,
-    pomodoroLongBreak
+    pomodoroTimeboxes.focus(),
+    pomodoroTimeboxes.shortBreak(),
+    pomodoroTimeboxes.focus(),
+    pomodoroTimeboxes.shortBreak(),
+    pomodoroTimeboxes.focus(),
+    pomodoroTimeboxes.shortBreak(),
+    pomodoroTimeboxes.focus(),
+    pomodoroTimeboxes.longBreak()
 ];
 
 let actTimeboxIdx = 0;

@@ -85,17 +85,12 @@ const timeboxes = [
 ];
 
 let actTimeboxIdx = 0;
-const actTimebox = {
-    label: null,
-    length: null,
-    timeSpent: 0,
-    colors: null
-};
+let actTimebox = timeboxes[actTimeboxIdx];
+setActTimebox(actTimeboxIdx);
 
 
 document.getElementById("")
 
-setActTimebox(actTimeboxIdx);
 
 document.getElementById("background-arc").setAttribute("d", describeArc(150, 150, 100, 0, 359.9));
 document.getElementById("label").innerHTML = actTimebox.label;
@@ -107,10 +102,23 @@ function setColors(colors) {
 }
 
 function setActTimebox(idx) {
-    actTimebox.label = timeboxes[actTimeboxIdx].label;
-    actTimebox.length = timeboxes[actTimeboxIdx].length;
-    actTimebox.colors = timeboxes[actTimeboxIdx].colors;
+    actTimebox = timeboxes[actTimeboxIdx];
     actTimebox.timeSpent = 0;
+
+    displayTimebox(actTimebox);
+}
+
+function displayTimebox(actTimebox) {
+    document.title = timeToString(actTimebox.length - actTimebox.timeSpent)  + " - " + actTimebox.label;
+    document.getElementById("time-spent").innerHTML = timeToString(actTimebox.timeSpent) + " / " + timeToString(actTimebox.length);
+
+    let deg = 360 / actTimebox.length * actTimebox.timeSpent;
+
+    if (deg === 360) {
+        deg = 359.9;
+    }
+
+    document.getElementById("arc").setAttribute("d", describeArc(150, 150, 100, 0, deg));
 }
 
 function timeToString(time) {
@@ -136,16 +144,7 @@ function play() {
     timerId = setInterval(function() {
         actTimebox.timeSpent += 1;
 
-        document.title = timeToString(actTimebox.length - actTimebox.timeSpent)  + " - " + actTimebox.label;
-        document.getElementById("time-spent").innerHTML = timeToString(actTimebox.timeSpent) + " / " + timeToString(actTimebox.length);
-
-        let deg = 360 / actTimebox.length * actTimebox.timeSpent;
-
-        if (deg === 360) {
-            deg = 359.9;
-        }
-
-        document.getElementById("arc").setAttribute("d", describeArc(150, 150, 100, 0, deg));
+        displayTimebox(actTimebox);
 
         if (actTimebox.length - actTimebox.timeSpent < 0.1) {
             if (config.sound) {

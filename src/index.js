@@ -145,6 +145,7 @@ function play() {
         actTimebox.timeSpent += 1;
 
         displayTimebox(actTimebox);
+        showProgress(timeboxes);
 
         if (actTimebox.length - actTimebox.timeSpent < 0.1) {
             if (config.sound) {
@@ -219,3 +220,34 @@ document.getElementById("speaker").onclick = function() {
 
     document.getElementById("speaker-sound").style.display = config.sound ? "" : "none";
 }
+
+function showProgress(timeboxes) {
+    const progressGroup = document.getElementById("progress");
+
+    while (progressGroup.lastChild) {
+        progressGroup.removeChild(progressGroup.lastChild);
+    }
+
+    const rectWidth = 7;
+    const rectRounding = 2;
+
+    const svgNamespace = document.createElementNS("http://www.w3.org/2000/svg", "svg").namespaceURI;
+
+    timeboxes.map((timebox, idx) => {
+        const rect = document.createElementNS(svgNamespace, "rect");
+
+        const color = timebox.timeSpent > 0 ? timebox.colors.arc : timebox.colors.bgArc;
+
+        rect.setAttribute("x", idx * rectWidth);
+        rect.setAttribute("y", 0);
+        rect.setAttribute("width", rectWidth);
+        rect.setAttribute("height", rectWidth);
+        rect.setAttribute("rx", rectRounding);
+        rect.setAttribute("ry", rectRounding);
+        rect.setAttribute("fill", color);
+
+        return rect;
+    }).forEach(rect => progressGroup.appendChild(rect));
+}
+
+showProgress(timeboxes);
